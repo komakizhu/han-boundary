@@ -1,7 +1,7 @@
 {
-  "id": "zh-wrap",
-  "name": "zh-wrap",
-  "version": "0.1.0",
+  "id": "han-boundary",
+  "name": "汉界 HanBoundary",
+  "version": "0.2.0",
   "minAppVersion": "1.5.0",
   "description": "Simplified Chinese word splitting in Edit Mode, Vim Mode, and Reading View tables.",
   "author": "Komaki Zhu",

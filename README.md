@@ -1,4 +1,4 @@
-# zh-wrap
+# 汉界 HanBoundary
 
 Obsidian 中文分词插件，合并了以下功能：
 
@@ -20,10 +20,10 @@ Obsidian 中文分词插件，合并了以下功能：
 将 `main.js`、`manifest.json` 和 `styles.css` 放入：
 
 ```text
-.obsidian/plugins/zh-wrap/
+.obsidian/plugins/han-boundary/
 ```
 
-然后在 Obsidian 的第三方插件设置中启用 `zh-wrap`。
+然后在 Obsidian 的第三方插件设置中启用 `汉界 HanBoundary`。
 
 表格颜色、表头和第一列样式仍由独立的 `komaki-table` CSS snippet 控制。
 
