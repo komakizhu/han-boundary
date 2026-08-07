@@ -1,0 +1,8 @@
+/* Komaki merged preview-table extension: keep each Jieba word intact. */
+.markdown-rendered table th .komaki-table-zh-word,
+.markdown-rendered table td .komaki-table-zh-word {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
