@@ -8,7 +8,7 @@ ${i.stack}`:r}var G=0,Ae=new TextEncoder("utf-8"),dn=typeof Ae.encodeInto=="func
 
 /* nosourcemap */
 
-/* Komaki preview-table extension: keep Jieba words intact in Reading View. */
+/* HanBoundary preview-table extension: keep Jieba words intact in Reading View. */
 const __komakiPreviewCjkRe = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
 const __komakiPreviewWordClass = "komaki-table-zh-word";
 const __komakiPreviewWrappedAttr = "data-komaki-chs-preview-wrapped";
@@ -77,7 +77,7 @@ async function __komakiProcessPreview(root, plugin) {
   try {
     for (const cell of cells) __komakiWrapPreviewCell(cell, plugin);
   } catch (error) {
-    console.error("Komaki merged Chinese word splitting preview failed", error);
+    console.error("HanBoundary Chinese word splitting preview failed", error);
   }
 }
 
