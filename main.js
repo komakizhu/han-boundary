@@ -110,3 +110,72 @@ Se.prototype.onload = async function () {
   });
   schedulePreviewScan();
 };
+
+/* Add the current editor selection to the Jieba user dictionary. */
+function __hanBoundarySelectedText(editor) {
+  return editor.getSelection()?.trim() || "";
+}
+
+function __hanBoundaryDictionaryWord(text) {
+  const word = String(text || "").trim();
+  if (!word || /\s/.test(word) || !/[\u3400-\u9fffA-Za-z0-9]/.test(word)) {
+    return null;
+  }
+  return word;
+}
+
+function __hanBoundaryDictionaryEntries(dict) {
+  return String(dict || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+async function __hanBoundaryAddSelectedWord(plugin, selectedText) {
+  const word = __hanBoundaryDictionaryWord(selectedText);
+  if (!word) {
+    new ke.Notice("请只选中一个词（不要包含空格或换行）后再加入词典");
+    return;
+  }
+
+  const entries = __hanBoundaryDictionaryEntries(plugin.settings.dict);
+  const alreadyExists = entries.some((entry) => entry.split(/\s+/)[0] === word);
+  if (alreadyExists) {
+    new ke.Notice(`“${word}”已经在 HanBoundary 词典中`);
+    return;
+  }
+
+  plugin.settings.dict = [...entries, word].join("\n");
+  await plugin.saveSettings();
+
+  if (!plugin.settings.useJieba) {
+    new ke.Notice(`“${word}”已加入词典；开启“使用结巴分词”后生效`);
+    return;
+  }
+
+  try {
+    Te(word);
+    new ke.Notice(`“${word}”已加入 HanBoundary 词典并生效`);
+  } catch (error) {
+    console.error("HanBoundary dictionary update failed", error);
+    new ke.Notice(`“${word}”已保存，但当前分词器更新失败，请手动重载 HanBoundary`);
+  }
+}
+
+const __hanBoundaryPreviousOnload = Se.prototype.onload;
+Se.prototype.onload = async function () {
+  await __hanBoundaryPreviousOnload.call(this);
+
+  this.registerEvent(
+    this.app.workspace.on("editor-menu", (menu, editor) => {
+      const selectedText = __hanBoundarySelectedText(editor);
+      if (!selectedText || !/[\u3400-\u9fffA-Za-z0-9]/.test(selectedText)) return;
+
+      menu.addItem((item) => {
+        item
+          .setTitle("加入 HanBoundary 词典")
+          .onClick(() => __hanBoundaryAddSelectedWord(this, selectedText));
+      });
+    }),
+  );
+};
